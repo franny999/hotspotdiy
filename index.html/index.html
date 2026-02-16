@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Single Ride Pass</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .bg-wrapper {
+      background: #a63f65;
+      min-width: 100vw;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+    .pass-container {
+      background: #a63f65;
+      border: 8px solid #fff;
+      border-radius: 40px;
+      padding: 32px 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+      text-align: center;
+      width: 375px;
+      height: 667px;
+      max-width: 100vw;
+      max-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .title {
+      color: #fff;
+      font-size: 1.1em;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+    .date, .time {
+      color: #fff;
+      font-size: 2em;
+      margin-bottom: 18px;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }
+    .transit {
+      color: #ffd600;
+      font-size: 2em;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .route {
+      color: #fff;
+      font-size: 1em;
+      font-weight: 400;
+    }
+    .expire-btn {
+      background: #ff4646;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 28px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: background 0.2s;
+    }
+    .expire-btn-bottom {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 160px;
+    }
+    .expire-btn:hover {
+      background: #e03a3a;
+    }
+  </style>
+</head>
+<body>
+  <div class="pass-container">
+    <div style="width:100%; display:flex; flex-direction:column; align-items:center; position:relative; height:100%;">
+      <div class="title">Single Ride Pass</div>
+      <div class="date" id="dateDisplay"></div>
+      <div class="time" id="timeDisplay"></div>
+      <div class="transit"><span style="display:block;">Peterborough</span><span style="display:block;">Transit</span></div>
+      <div class="route">Route 6 - Sherbrooke</div>
+      <img src="town.jpeg" alt="Pass Image" id="passImage" style="max-width:340px; max-height:340px; display:block; margin:auto; margin-top:40px;" />
+      <button class="expire-btn expire-btn-bottom">Expire</button>
+      <div class="expire-info" style="position:absolute; left:50%; transform:translateX(-50%); bottom:70px; font-size:1.15em; color:#fff; opacity:0.92; font-weight:bold; white-space:nowrap;">
+        This pass expires after 14 <span style="display:block;">minutes</span>
+        <div style="font-size:0.7em; font-weight:400; color:#fff; opacity:0.92; margin-top:8px; text-align:center;">User ID 1111763239</div>
+      </div>
+    </div>
+
+  <script>
+    const timeDisplay = document.getElementById('timeDisplay');
+    const dateDisplay = document.getElementById('dateDisplay');
+
+    function pad(num) {
+      return num.toString().padStart(2, '0');
+    }
+
+    function updateDateTime() {
+      const now = new Date();
+      // Date format: Day Mon DD YYYY (no commas)
+      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const dayOfWeek = days[now.getDay()];
+      const month = months[now.getMonth()];
+      const day = now.getDate();
+      const year = now.getFullYear();
+      const dateStr = `${dayOfWeek} ${month} ${day} ${year}`;
+      dateDisplay.textContent = dateStr;
+
+      // Time format: HH:MM:SS AM/PM (standard time)
+      let hours = now.getHours();
+      const minutes = pad(now.getMinutes());
+      const seconds = pad(now.getSeconds());
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      timeDisplay.textContent = `${hours}:${minutes}:${seconds} ${ampm}`;
+    }
+
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+  </script>
+</body>
+</html>
